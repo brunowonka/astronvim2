@@ -3,6 +3,20 @@
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
 --       as this provides autocomplete and documentation while editing
 
+-- Workaround for https://github.com/zellij-org/zellij/issues/2647
+if vim.env.ZELLIJ then
+  function my_paste(c)
+    return function(lines)
+      local content = vim.fn.getreg('"')
+      return vim.split(content, '\n')
+    end
+  end
+else
+  function my_paste(c)
+    return require('vim.ui.clipboard.osc52').paste(c)
+  end
+end
+
 ---@type LazySpec
 return {
   "AstroNvim/astrocore",
@@ -46,6 +60,17 @@ return {
         colorcolumn = "81",
       },
       g = { -- vim.g.<key>
+          clipboard = {
+            name = 'OSC 52',
+            copy = {
+              ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+              ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+            },
+            paste = {
+              ['+'] = my_paste('+'),
+              ['*'] = my_paste('*'),
+            },
+          }
         -- configure global vim variables (vim.g)
         -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
         -- This can be found in the `lua/lazy_setup.lua` file
