@@ -3,11 +3,11 @@ function BrunoAutoCmd()
   local fileTy = vim.api.nvim_buf_get_option(0, "filetype")
 
   if fileTy == "gitrebase" then
-    wkl.register {
-      ["R"] = { "^dwireword <ESC>", "Reword" },
-      ["E"] = { "^dwiedit <ESC>", "Edit" },
-      ["B"] = { "Obreak<ESC>", "Break" },
-    }
+    wkl.add({
+      {"R", "^dwireword <ESC>", desc = "Reword" },
+      {"E", "^dwiedit <ESC>", desc = "Edit" },
+      {"B", "Obreak<ESC>", desc = "Break" },
+    })
   elseif fileTy == "gitcommit" then
     vim.opt.colorcolumn = { "51", "73" }
   end
