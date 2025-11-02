@@ -1,16 +1,26 @@
-function BrunoAutoCmd()
-  local wkl = require "which-key"
-  local fileTy = vim.api.nvim_buf_get_option(0, "filetype")
-
-  if fileTy == "gitrebase" then
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "gitrebase" },
+  callback = function()
+    local wkl = require "which-key"
     wkl.add({
       {"R", "^dwireword <ESC>", desc = "Reword" },
       {"E", "^dwiedit <ESC>", desc = "Edit" },
       {"B", "Obreak<ESC>", desc = "Break" },
     })
-  elseif fileTy == "gitcommit" then
+  end
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "gitcommit" , "jjdescription" },
+  callback = function()
     vim.opt.colorcolumn = { "51", "73" }
   end
-end
+})
 
-vim.cmd "autocmd FileType * lua BrunoAutoCmd()"
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+    pattern = { "*.jjdescription" },
+    callback = function()
+        -- This name must match the 'filetype' from Step 1
+        vim.bo.filetype = "jjdescription"
+    end,
+})
