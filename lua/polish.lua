@@ -24,3 +24,9 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
         vim.bo.filetype = "jjdescription"
     end,
 })
+
+vim.filetype.add({
+  extension = {
+    jjdescription = "jjdescription",
+  },
+})
