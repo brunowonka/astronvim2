@@ -14,6 +14,21 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "gitcommit" , "jjdescription" },
   callback = function()
     vim.opt.colorcolumn = { "51", "73" }
+
+    -- Set the wrap limit to 72 characters
+    vim.opt_local.textwidth = 72
+
+    -- Enable automatic wrapping:
+    -- t: auto-wrap text using textwidth
+    -- c: auto-wrap comments (usually applies if there are comment chars)
+    -- r: continue comments after Enter
+    -- q: allow formatting of comments with "gq"
+    -- n: recognize numbered lists
+    -- j: remove comment leader when joining lines
+    vim.opt_local.formatoptions:append("tcrqnj")
+
+    -- Optional: enable spell checking for commit messages
+    vim.opt_local.spell = true
   end
 })
 
